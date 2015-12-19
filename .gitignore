@@ -88,3 +88,5 @@ $RECYCLE.BIN/
 *.suo
 *.log
 *.filters
+AdventOfCode2015/enc_temp_folder/*
+AdventOfCode2015/AdventOfCode2015.VC.opendb

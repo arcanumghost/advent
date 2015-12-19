@@ -5,28 +5,30 @@ using namespace std;
 
 int main()
 {
-	// Gotta find something cleaner...
-
 	// Attempt to open input file
-	fstream inputFile;
-	inputFile.open("input.txt", ios::in | ios::binary | ios::beg );
-	if(!inputFile.is_open()) return -1;
-
-	// Find the size
-	streampos streamPos = inputFile.tellg();
-	inputFile.seekg(0,ios::end);
-	streampos streamEnd = inputFile.tellg();
-
-	// Read file
-	char *fileContents = new char[streamEnd - streamPos];	// Don't print this, no terminator :)
-	inputFile.seekg(0,ios::beg);
-	inputFile.read(fileContents, streamEnd);
-	inputFile.close();
+	fstream inputFile {"input.txt", ios::in | ios::binary};
 
 	// Analyze contents
 	int floor = 0;
-	for (int i=0; streamPos != streamEnd; ++i, streamPos+=1)
-		fileContents[i] == '(' ? floor++ : floor--;
+	int count = 0;
+	char c;
+	bool bFirstBasement {true};
+	while (++count, inputFile >> c)
+	{
+		// There are no tricky characters
+		if(c == '(')
+			floor++;
+		else
+		{
+			floor--;
+			// Stop to record the first character that sends Santa to the basement.
+			if (floor == -1 && bFirstBasement)
+			{
+				bFirstBasement = false;
+				cout << count << endl;
+			}
+		}
+	}
 
 	// Result
 	cout << floor << endl;
