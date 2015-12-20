@@ -8,18 +8,17 @@ using namespace std;
 
 int main()
 {
-	//string secretkey {"abcdef"};
 	string secretkey {"ckczppom"};
 	bool foundHash = false;
-	for (int i = 0; !foundHash && i < 1000000; ++i)
+	for (int i = 0; !foundHash; ++i)
 	{
-		char buffer[100];
-		string num = to_string(i);
-		string hash = md5(secretkey + num);
+		// Hash
+		string hash = md5(secretkey + to_string(i));
 
-		if(hash.substr(0,5) == "00000")
+		// Check
+		if(hash.substr(0,6) == "000000")
 		{
-			cout << num << ' ' << hash << endl;
+			cout << i << ' ' << hash << endl;
 			foundHash = true;
 		}
 	}
