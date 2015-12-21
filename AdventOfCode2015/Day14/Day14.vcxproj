@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{97EB287A-C9DB-4A9E-81BF-0399C80D1442}</ProjectGuid>
+    <ProjectGuid>{FF954027-4DAA-48C2-B991-2FF7C649A5EE}</ProjectGuid>
     <RootNamespace>Day14</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -110,6 +110,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Reindeer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Reindeer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="input.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

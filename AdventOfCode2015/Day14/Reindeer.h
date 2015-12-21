@@ -14,5 +14,5 @@ class Reindeer
 public:
 	Reindeer(int speed, int endurance, int recharge);
 	void run();
-	int 
+	int position() { return mPosition; }
 };
