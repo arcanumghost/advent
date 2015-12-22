@@ -2,7 +2,7 @@
 
 Reindeer::Reindeer(int speed, int endurance, int recharge)
 	: mSpeed (speed), mEndurance (endurance), mRecharge (recharge),
-		bFlying (true), time(mEndurance), mPosition(0)
+		bFlying (true), time(mEndurance), mPosition(0), mPoints(0)
 {}
 
 void Reindeer::run()
@@ -14,6 +14,6 @@ void Reindeer::run()
 	if (!time)
 	{
 		bFlying = !bFlying;
-		time = bFlying ? mRecharge : mEndurance;
+		time = bFlying ? mEndurance : mRecharge;
 	}
 }

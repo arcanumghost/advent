@@ -10,9 +10,12 @@ class Reindeer
 	int time;		// Time remaining in state
 
 	int mPosition;	// Distance traveled
+	int mPoints;
 
 public:
 	Reindeer(int speed, int endurance, int recharge);
 	void run();
 	int position() { return mPosition; }
+	void win() { mPoints++; }
+	int points() { return mPoints; }
 };

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <set>
 
 using namespace std;
 
@@ -31,18 +32,38 @@ int main()
 	for (int i = 0; i < 2503; ++i)
 	{
 		for(int r = 0; r < reindeer.size(); ++r)
+		{
 			reindeer[r].run();
+		}
+
+		set<int> farReindeer;
+		int farthest = 0;
+		for (int x = 0; x < reindeer.size(); ++x)
+		{
+			if(reindeer[x].position() > farthest)
+			{
+				farthest = reindeer[x].position();
+				farReindeer.clear();
+				farReindeer.insert(x);
+			}
+
+			if (reindeer[x].position() == farthest)
+			{
+				farReindeer.insert(x);
+			}
+		}
+
+		// Award a point
+		for(int x : farReindeer)
+			reindeer[x].win();
 	}
 
 	// Analyze
-	int farthest = 0;
-	for (int i = 0; i < reindeer.size(); ++i)
-	{
-		if(reindeer[i].position() > farthest)
-			farthest = reindeer[i].position();
-	}
-
-	cout << farthest << endl;
+	int winnest = 0;
+	for(int i=0; i<reindeer.size(); ++i)
+		if(reindeer[i].points() > winnest)
+			winnest = reindeer[i].points();
+	cout << winnest << endl;
 
 	char c;
 	cin >> c;
