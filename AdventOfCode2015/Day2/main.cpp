@@ -7,7 +7,7 @@ using namespace std;
 
 int main()
 {
-	fstream input {"input.txt", ios::in};
+	fstream input {"cryan.txt", ios::in};
 
 	string line;
 	int totalPaper = 0;
