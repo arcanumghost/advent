@@ -10,10 +10,13 @@ using namespace std;
 bool newSwitch(int x, int y, bool *past)
 {
 	int adj = 0;
-	for(int i=max(0,x-1);i<=min(99,x+1);++i)
-		for(int j=max(0,y-1);j<min(99,y+1);++j)
-			if(i!=x && j!=y)
-				adj += past[i*100 + j];
+	for (int j = max(0, y - 1); j <= min(99, y + 1); ++j)
+		for (int i = max(0, x - 1); i <= min(99, x + 1); ++i)
+			if(i!=x || j!=y)
+				adj += past[j*100 + i];
+
+	if((y==0 || y==99) && (x==0 || x==99))
+		return true;
 	if(past[y*100 + x] && (adj == 2 || adj == 3))
 		return true;
 	if(!past[y*100 + x] && adj == 3)
@@ -24,7 +27,7 @@ bool newSwitch(int x, int y, bool *past)
 int main()
 {
 	// Read
-	fstream input {"test.txt",ios::in};
+	fstream input {"input.txt",ios::in};
 	string line;
 	bool *switches = new bool[100*100];
 	bool *buffer = new bool[100*100];
@@ -42,9 +45,19 @@ int main()
 	// Simulate
 	for (int i = 0; i < 100; ++i)
 	{
-		for(int x=0; x<100; ++x)
-			for(int y=0; y<100; ++y)
+		for (int y = 0; y < 100; ++y)
+			for (int x = 0; x < 100; ++x)
 				buffer[y*100 + x] = newSwitch(x,y,switches);
+
+		// print this one...
+		/*for (int y = 0; y < 8; ++y)
+		{
+			for (int x = 0; x < 8; ++x)
+			{
+				cout << (buffer[y*100+x] ? '#' : '.');
+			}
+			cout << endl;
+		}*/
 
 		swap(buffer, switches);
 	}
