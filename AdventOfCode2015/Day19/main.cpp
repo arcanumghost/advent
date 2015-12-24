@@ -8,12 +8,31 @@
 
 using namespace std;
 
-void reduce(set<string> &sources)
+int nOptions(string &src, vector<pair<string, string>> &replacements)
+{
+	set<string> results;
+	for (pair<string, string> rep : replacements)
+	{
+		int p = -1;
+		do
+		{
+			p = src.find(rep.second, p + 1);
+			string tSrc = src;
+			if (p>-1 && p<src.length())
+				results.insert(tSrc.replace(p, rep.second.length(), rep.first));
+		} while (p < src.size() && p != -1);
+	}
+	return results.size();
+}
+
+void reduce(set<string> &sources, vector<pair<string,string>> &replacements)
 {
 	vector<string> sortedsources(sources.begin(),sources.end());
-	sort(sortedsources.begin(),sortedsources.end());
+	sort(sortedsources.begin(),sortedsources.end(),[&](string source1, string source2) -> bool {
+		return nOptions(source1, replacements) < nOptions(source2, replacements);
+	});
 	sources.clear();
-	for(int i=0; i<50000 && i<sortedsources.size(); ++i)
+	for(int i=max(int(sortedsources.size()-1000),0); i<sortedsources.size(); ++i)
 		sources.insert(sortedsources[i]);
 }
 
@@ -36,7 +55,7 @@ void step(set<string> &sources, vector<pair<string,string>> &replacements)
 	}
 	sources = results;
 	cout << results.size() << " sources ";
-	reduce(sources);
+	reduce(sources, replacements);
 	cout << "reduced to " << sources.size() << endl;
 	if(!sources.size())
 		cout << "damn" << endl;
@@ -46,7 +65,7 @@ void step(set<string> &sources, vector<pair<string,string>> &replacements)
 // between 207 and 215...
 int main()
 {
-	fstream input {"test.txt",ios::in};
+	fstream input {"input.txt",ios::in};
 	string line;
 
 	//string dest = "CRnCaCaCaSiRnBPTiMgArSiRnSiRnMgArSiRnCaFArTiTiBSiThFYCaFArCaCaSiThCaPBSiThSiThCaCaPTiRnPBSiThRnFArArCaCaSiThCaSiThSiRnMgArCaPTiBPRnFArSiThCaSiRnFArBCaSiRnCaPRnFArPMgYCaFArCaPTiTiTiBPBSiThCaPTiBPBSiRnFArBPBSiRnCaFArBPRnSiRnFArRnSiRnBFArCaFArCaCaCaSiThSiThCaCaPBPTiTiRnFArCaPTiBSiAlArPBCaCaCaCaCaSiRnMgArCaSiThFArThCaSiThCaSiRnCaFYCaSiRnFYFArFArCaSiRnFYFArCaSiRnBPMgArSiThPRnFArCaSiRnFArTiRnSiRnFYFArCaSiRnBFArCaSiRnTiMgArSiThCaSiThCaFArPRnFArSiRnFArTiTiTiTiBCaCaSiRnCaCaFYFArSiThCaPTiBPTiBCaSiThSiRnMgArCaF";
@@ -54,8 +73,8 @@ int main()
 	//set<string> sources {"e"};
 
 	// Go backwards
-	//set<string> sources = {"CRnCaCaCaSiRnBPTiMgArSiRnSiRnMgArSiRnCaFArTiTiBSiThFYCaFArCaCaSiThCaPBSiThSiThCaCaPTiRnPBSiThRnFArArCaCaSiThCaSiThSiRnMgArCaPTiBPRnFArSiThCaSiRnFArBCaSiRnCaPRnFArPMgYCaFArCaPTiTiTiBPBSiThCaPTiBPBSiRnFArBPBSiRnCaFArBPRnSiRnFArRnSiRnBFArCaFArCaCaCaSiThSiThCaCaPBPTiTiRnFArCaPTiBSiAlArPBCaCaCaCaCaSiRnMgArCaSiThFArThCaSiThCaSiRnCaFYCaSiRnFYFArFArCaSiRnFYFArCaSiRnBPMgArSiThPRnFArCaSiRnFArTiRnSiRnFYFArCaSiRnBFArCaSiRnTiMgArSiThCaSiThCaFArPRnFArSiRnFArTiTiTiTiBCaCaSiRnCaCaFYFArSiThCaPTiBPTiBCaSiThSiRnMgArCaF"};
-	set<string> sources {"HOHOHOHOHOHOHO"};
+	set<string> sources = {"CRnCaCaCaSiRnBPTiMgArSiRnSiRnMgArSiRnCaFArTiTiBSiThFYCaFArCaCaSiThCaPBSiThSiThCaCaPTiRnPBSiThRnFArArCaCaSiThCaSiThSiRnMgArCaPTiBPRnFArSiThCaSiRnFArBCaSiRnCaPRnFArPMgYCaFArCaPTiTiTiBPBSiThCaPTiBPBSiRnFArBPBSiRnCaFArBPRnSiRnFArRnSiRnBFArCaFArCaCaCaSiThSiThCaCaPBPTiTiRnFArCaPTiBSiAlArPBCaCaCaCaCaSiRnMgArCaSiThFArThCaSiThCaSiRnCaFYCaSiRnFYFArFArCaSiRnFYFArCaSiRnBPMgArSiThPRnFArCaSiRnFArTiRnSiRnFYFArCaSiRnBFArCaSiRnTiMgArSiThCaSiThCaFArPRnFArSiRnFArTiTiTiTiBCaCaSiRnCaCaFYFArSiThCaPTiBPTiBCaSiThSiRnMgArCaF"};
+	//set<string> sources {"HOHOHOHOHOHOHO"};
 	string dest = "e";
 
 	vector<pair<string,string>> replacements;
@@ -70,6 +89,7 @@ int main()
 	int iterations=0;
 	while (sources.find(dest) == sources.end())
 	{
+		cout << iterations+1 << ": ";
 		step(sources, replacements);
 		iterations++;
 	}
