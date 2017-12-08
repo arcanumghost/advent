@@ -87,8 +87,7 @@ $RECYCLE.BIN/
 *.sdf
 *.suo
 *.log
-AdventOfCode2015/enc_temp_folder/*
-AdventOfCode2015/AdventOfCode2015.VC.opendb
 *.enc
-AdventOfCode2015/Release/*
-AdventOfCode2015/x64/Release/*
+*/Release/*
+*/x64/*
+*/.vs/*
