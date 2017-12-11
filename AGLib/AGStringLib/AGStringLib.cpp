@@ -22,4 +22,11 @@ namespace AGStringLib
 
 		return output;
 	}
+
+	void strip(string &input, char const* delim)
+	{
+		string::size_type loc;
+		while(loc = input.find(delim), loc != string::npos)
+			input.erase(loc,1);
+	}
 }
